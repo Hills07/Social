@@ -1,0 +1,36 @@
+import hashlib
+import time
+
+# Basic function to simulate mining (proof of work)
+def mine(block_data, difficulty=4):
+    # Difficulty determines the number of leading zeros required in the hash
+    target = '0' * difficulty
+
+    # Time tracking to measure how long mining takes
+    start_time = time.time()
+
+    # Starting nonce (number to change to generate new hashes)
+    nonce = 0
+
+    # Loop until we find a valid hash (leading zeros)
+    while True:
+        # Create the string to be hashed
+        text_to_hash = block_data + str(nonce)
+
+        # Calculate the hash using SHA-256
+        hash_result = hashlib.sha256(text_to_hash.encode('utf-8')).hexdigest()
+
+        # Check if the hash meets the difficulty (leading zeros)
+        if hash_result[:difficulty] == target:
+            end_time = time.time()
+            print(f"Mining Successful! Hash: {hash_result}")
+            print(f"Nonce: {nonce}")
+            print(f"Time taken: {end_time - start_time:.2f} seconds")
+            return hash_result
+        nonce += 1
+
+# Simulate mining for a block with random data (e.g., transactions)
+block_data = "Transaction Data for Block 1"
+difficulty = 4  # Set difficulty level (more leading zeros = harder mining)
+print(f"Starting mining process with difficulty: {difficulty}")
+mine(block_data, difficulty)
